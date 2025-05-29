@@ -1,30 +1,17 @@
-# React + TypeScript + Vite
+# 💧 Water Reminder App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Stay hydrated and healthy! The **Water Reminder App** helps you track your daily water intake, sends timely notifications, and keeps your hydration goals on track.
 
-Currently, two official plugins are available:
+![Water Reminder Screenshot](ss/home.png) <!-- Replace with your actual path -->
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+- ⏰ Smart reminders to drink water
+- 📊 Statistics and progress charts
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## 📸 Screenshots
 
-- Configure the top-level `parserOptions` property like this:
+| Home Screen | Reminder | Setting                    | Sidebar                    |
+|-------------|----------|----------------------------|----------------------------|
+| ![Home](ss/home.png) |  | ![Setting](ss/setting.png) | ![Sidebar](ss/sidebar.png) |
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
