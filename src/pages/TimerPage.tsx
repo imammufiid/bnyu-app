@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import {CircleTimer} from '../components/CircleTimer';
 import {DURATION_KEY} from "../services/StorageService.ts";
-import {Reminder} from "../components/Reminder.tsx";
+import {ReminderNotification} from "../components/ReminderNotification.tsx";
 import {DrinkReminder} from "../models/DrinkReminder.ts";
 import {useFirestoreSaveCollection} from "../hooks/firebase/useFirestoreSaveCollection.ts";
 import {Timestamp} from "firebase/firestore";
@@ -34,7 +34,7 @@ export const TimerPage = () => {
     <div className="flex flex-col items-center w-full h-full">
       {showReminder && (
         <div className={'m-12'}>
-          <Reminder onComplete={handleOnCompleteReminder}/>
+          <ReminderNotification onComplete={handleOnCompleteReminder}/>
         </div>
       )}
       {!showReminder && (

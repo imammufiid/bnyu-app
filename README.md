@@ -1,8 +1,8 @@
-# 💧 Water Reminder App
+# 💧 Water ReminderNotification App
 
-Stay hydrated and healthy! The **Water Reminder App** helps you track your daily water intake, sends timely notifications, and keeps your hydration goals on track.
+Stay hydrated and healthy! The **Water ReminderNotification App** helps you track your daily water intake, sends timely notifications, and keeps your hydration goals on track.
 
-![Water Reminder Screenshot](ss/home.png) <!-- Replace with your actual path -->
+![Water ReminderNotification Screenshot](ss/home.png) <!-- Replace with your actual path -->
 
 ## 🚀 Features
 
@@ -11,7 +11,7 @@ Stay hydrated and healthy! The **Water Reminder App** helps you track your daily
 
 ## 📸 Screenshots
 
-| Home Screen | Reminder | Setting                    | Sidebar                    |
-|-------------|----------|----------------------------|----------------------------|
-| ![Home](ss/home.png) |  | ![Setting](ss/setting.png) | ![Sidebar](ss/sidebar.png) |
+| Home Screen | ReminderNotification Notification                | Setting                    | Sidebar                    |
+|-------------|--------------------------------------|----------------------------|----------------------------|
+| ![Home](ss/home.png) | ![Notification](ss/notification.png) | ![Setting](ss/setting.png) | ![Sidebar](ss/sidebar.png) |
 

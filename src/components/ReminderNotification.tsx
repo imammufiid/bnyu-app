@@ -3,11 +3,11 @@ import {BellIcon} from '@heroicons/react/24/outline';
 import bellSound from './../assets/bell.wav'
 
 
-type ReminderProps = {
+type ReminderNotificationProps = {
   onComplete: (isDrink: boolean) => void
 }
 
-export const Reminder = (props: ReminderProps) => {
+export const ReminderNotification = (props: ReminderNotificationProps) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(true);
 
@@ -34,7 +34,7 @@ export const Reminder = (props: ReminderProps) => {
     <div className="flex flex-col items-center justify-center space-y-4">
       <div
         className="p-6 bg-yellow-100 rounded-full shadow-lg animate-bounce"
-        title="Reminder"
+        title="ReminderNotification"
       >
         <BellIcon className="w-32 h-32 text-yellow-600"/>
       </div>
