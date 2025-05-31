@@ -29,10 +29,10 @@ let win: BrowserWindow | null
 function createWindow() {
   win = new BrowserWindow({
     icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
-    width: 1200,  // Increased window width
-    height: 800, // Increased window height
-    minWidth: 600, // Minimum window width
-    minHeight: 400, // Minimum window height
+    width: 1000,  // Increased window width
+    height: 600, // Increased window height
+    minWidth: 500, // Minimum window width
+    minHeight: 200, // Minimum window height
     resizable: true, // Make window resizable
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),

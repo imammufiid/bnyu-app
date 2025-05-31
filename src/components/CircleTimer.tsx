@@ -1,10 +1,10 @@
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useTimer} from "../hooks/useTimer.ts";
 import {useTimerRunning} from "../hooks/useTimerRunning.ts";
+import {REPEAT_KEY} from "../services/StorageService.ts";
 
 type CircleTimerProps = {
   duration: number
-  repeat: boolean
   onComplete: () => void
 }
 
@@ -12,17 +12,26 @@ export const CircleTimer = (props: CircleTimerProps) => {
   // Variables
   const size = 320
   const strokeWidth = 40
-  const {duration, onComplete, repeat} = props
+  const {duration, onComplete} = props
   const radius = (size - strokeWidth) / 2
   const circumference = radius * 2 * Math.PI
 
   // Hooks
+  const [isRepeat, setIsRepeat] = useState(false)
   const {timeRemaining, setTimeRemaining} = useTimer();
   const {isRunning, setIsRunning} = useTimerRunning()
 
   useEffect(() => {
+    const repeat = localStorage.getItem(REPEAT_KEY)
+    setIsRepeat(repeat === 'true')
+  }, []);
+
+  useEffect(() => {
+    if (!isRepeat) return;
+    console.log("isRepeat", isRepeat)
     setTimeRemaining(duration);
-  }, [duration]);
+    setIsRunning(true);
+  }, [isRepeat, duration]);
 
   // MARK: - Handle timer 
   useEffect(() => {
@@ -31,21 +40,17 @@ export const CircleTimer = (props: CircleTimerProps) => {
     const timer = setTimeout(() => {
       setTimeRemaining((prevState) => {
         if (prevState <= 1) {
-          if (repeat) {
-            return duration;
-          } else {
-            setIsRunning(false);
-            setTimeRemaining(duration)
-            onComplete();
-            return 0;
-          }
+          setIsRunning(false);
+          setTimeRemaining(duration)
+          onComplete();
+          return 0;
         }
         return prevState - 1;
       });
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [timeRemaining, isRunning, repeat, duration, onComplete]);
+  }, [timeRemaining, isRunning, isRepeat, duration, onComplete]);
 
   const progress = timeRemaining / duration
   const strokeDashOffset = circumference * (1 - progress)
