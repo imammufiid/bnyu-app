@@ -12,6 +12,14 @@ export const ReminderNotification = (props: ReminderNotificationProps) => {
   const [isPlaying, setIsPlaying] = useState(true);
 
   useEffect(() => {
+    const notification = new Notification('Lets Drink', { body: 'LET\'S MOTHER FUCKER' });
+    notification.onclick = () => {
+      // Send an IPC message to main process to focus the window
+      window.electronAPI?.focusAppWindow?.();
+    };
+  }, []);
+
+  useEffect(() => {
     const audio = audioRef.current;
     if (audio && isPlaying) {
       audio.play().catch(err => {

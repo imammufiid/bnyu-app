@@ -1,7 +1,28 @@
 import './App.css'
 import { Layout } from './components/Layout';
+import {useEffect} from "react";
 
 function App() {
+  const handleNotify = () => {
+    if (Notification.permission === 'granted') {
+      new Notification('Hi from Electron Renderer', {
+        body: 'This is a local notification!',
+      });
+    } else if (Notification.permission !== 'denied') {
+      Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+          new Notification('Permission Granted', {
+            body: 'You will now receive notifications.',
+          });
+        }
+      });
+    }
+  };
+
+  useEffect(() => {
+    handleNotify()
+  }, [])
+
   return (
     <Layout>
     </Layout>

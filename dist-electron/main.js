@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron";
+import { app, ipcMain, BrowserWindow } from "electron";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
@@ -40,6 +40,15 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
     win = null;
+  }
+});
+ipcMain.on("focus-app-window", () => {
+  const win2 = BrowserWindow.getAllWindows()[0];
+  if (win2) {
+    if (win2.isMinimized()) {
+      win2.restore();
+    }
+    win2.focus();
   }
 });
 app.on("activate", () => {

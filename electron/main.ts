@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
 import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
@@ -61,6 +61,16 @@ app.on('window-all-closed', () => {
     win = null
   }
 })
+
+ipcMain.on('focus-app-window', () => {
+  const win = BrowserWindow.getAllWindows()[0];
+  if (win) {
+    if (win.isMinimized()) {
+      win.restore();
+    }
+    win.focus();
+  }
+});
 
 app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the
