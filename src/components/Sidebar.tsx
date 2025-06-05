@@ -1,4 +1,9 @@
-import { MdTimer, MdSettings, MdHistory } from 'react-icons/md';
+import {MdTimer, MdSettings, MdHistory, MdPerson, MdEmojiEvents, MdLogout} from 'react-icons/md';
+import {useUserAccount} from "../hooks/useUserAccount.ts";
+import {useCallback, useRef, useState} from "react";
+import { signOut } from "firebase/auth";
+import {auth} from "../services/FirebaseService.ts";
+import {useNavigate} from "react-router-dom";
 
 type SidebarProps = {
   onSelect: (item: string) => void;
@@ -7,15 +12,35 @@ type SidebarProps = {
   onToggle: () => void;
 }
 
-export const Sidebar = ({ onSelect, selectedItem, isCollapsed, onToggle }: SidebarProps) => {
+export const Sidebar = ({onSelect, selectedItem, isCollapsed, onToggle}: SidebarProps) => {
   const menuItems = [
-    { id: 'timer', label: 'Timer', icon: <MdTimer size={24} /> },
-    { id: 'settings', label: 'Settings', icon: <MdSettings size={24} /> },
-    { id: 'history', label: 'History', icon: <MdHistory size={24} /> },
+    {id: 'timer', label: 'Timer', icon: <MdTimer size={24}/>},
+    {id: 'settings', label: 'Settings', icon: <MdSettings size={24}/>},
+    {id: 'history', label: 'History', icon: <MdHistory size={24}/>},
+    {id: 'rank', label: 'Rank', icon: <MdEmojiEvents size={24}/>},
   ];
 
+  const {user} = useUserAccount()
+  const [showPopup, setShowPopup] = useState(false);
+  const navigate = useNavigate()
+
+  const buttonRef = useRef<HTMLDivElement>(null);
+
+  const handleClick = () => {
+    if (!buttonRef.current) return;
+    setShowPopup((prev) => !prev);
+  };
+
+  const handleLogout = useCallback(() => {
+    signOut(auth)
+      .then(() => {
+        localStorage.removeItem('user')
+        navigate('/login')
+      })
+  }, [])
+
   return (
-    <div className={`h-screen bg-gray-800 text-white p-4 transition-all duration-300 ${
+    <div className={`h-screen bg-gray-800 text-white p-4 transition-all duration-300 flex flex-col ${
       isCollapsed ? 'w-20' : 'w-64'
     }`}>
       <div className="flex items-center justify-between mb-8">
@@ -31,6 +56,7 @@ export const Sidebar = ({ onSelect, selectedItem, isCollapsed, onToggle }: Sideb
           {isCollapsed ? '→' : '←'}
         </button>
       </div>
+
       <nav>
         <ul className="space-y-2">
           {menuItems.map((item) => (
@@ -47,10 +73,11 @@ export const Sidebar = ({ onSelect, selectedItem, isCollapsed, onToggle }: Sideb
               >
                 <span className="text-xl">{item.icon}</span>
                 {!isCollapsed && <span>{item.label}</span>}
-                
+
                 {/* Tooltip */}
                 {isCollapsed && (
-                  <div className="absolute left-full ml-2 px-2 py-1 bg-gray-900 text-white text-sm rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
+                  <div
+                    className="absolute left-full ml-2 px-2 py-1 bg-gray-900 text-white text-sm rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
                     {item.label}
                   </div>
                 )}
@@ -59,6 +86,31 @@ export const Sidebar = ({ onSelect, selectedItem, isCollapsed, onToggle }: Sideb
           ))}
         </ul>
       </nav>
+      <div className="flex-1"/>
+      <div ref={buttonRef}
+           onClick={handleClick}
+           className={`relative flex items-center cursor-pointer gap-2 ${isCollapsed ? 'justify-center' : 'justify-start'}`}>
+        <div className="rounded-full bg-gray-900 w-12 h-12 p-1 flex justify-center items-center text-xl">
+          {user && user.photoURL && <img src={user.photoURL} alt="avatar" className="rounded-full "/>}
+          {!user && <MdPerson size={24}/>}
+        </div>
+        {!isCollapsed && (<div>{user?.displayName}</div>)}
+        {showPopup &&
+            <div
+                className="absolute bg-gray-600 border border-gray-800 rounded-xl shadow-xl p-2 z-[1000] bottom-18 left-4"
+                style={{
+                  position: 'fixed',
+                  minWidth: 200,
+                }}
+            >
+                <div onClick={handleLogout}
+                    className={'flex gap-4 cursor-pointer hover:border-white hover:bg-red-500 hover:text-white hover:font-bold hover:border-1 border-0 p-2 rounded-lg'}>
+                    <MdLogout size={24}/> Logout
+                </div>
+            </div>
+        }
+      </div>
     </div>
+
   );
 }; 

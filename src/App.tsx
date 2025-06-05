@@ -6,7 +6,7 @@ import LoginPage from "./pages/auth/LoginPage.tsx";
 
 
 function App() {
-  const isAuthenticated = false
+  const user = localStorage.getItem('user')
 
   const handleNotify = () => {
     if (Notification.permission === 'granted') {
@@ -32,7 +32,7 @@ function App() {
         <Route
           path="/"
           element={
-            isAuthenticated ? (
+            user ? (
               <Navigate to="/home" replace/>
             ) : (
               <Navigate to="/login" replace/>
@@ -42,19 +42,13 @@ function App() {
 
         {/* Public routes */}
         <Route path="/login" element={<LoginPage/>}/>
-
-        {/* Protected routes (only if authenticated) */}
-        {isAuthenticated && (
-          <>
-            <Route
-              path="/home"
-              element={
-                <Layout>
-                </Layout>
-              }
-            />
-          </>
-        )}
+        <Route
+          path="/home"
+          element={
+            <Layout>
+            </Layout>
+          }
+        />
       </Routes>
     </HashRouter>
     // <Layout>

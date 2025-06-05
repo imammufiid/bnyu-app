@@ -4,15 +4,18 @@ import App from './App.tsx'
 import './index.css'
 import {TimerProvider} from "./states/providers/TimerProvider.tsx";
 import {TimerRunningProvider} from "./states/providers/TimerRunningProvider.tsx";
+import {UserAccountProvider} from "./states/providers/UserAccountProvider.tsx";
 
 // TODO
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <TimerProvider>
-      <TimerRunningProvider>
-        <App/>
-      </TimerRunningProvider>
-    </TimerProvider>
+    <UserAccountProvider>
+      <TimerProvider>
+        <TimerRunningProvider>
+          <App/>
+        </TimerRunningProvider>
+      </TimerProvider>
+    </UserAccountProvider>
   </React.StrictMode>,
 )
 

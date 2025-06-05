@@ -1,8 +1,13 @@
 import React, {useEffect} from 'react';
 import {CircleStackIcon} from '@heroicons/react/24/outline';
 import {useGoogleAuth} from "../../hooks/firebase/useGoogleAuth.ts";
+import {useUserAccount} from "../../hooks/useUserAccount.ts";
+import {useNavigate} from "react-router-dom";
 
 const LoginWithGoogle: React.FC = () => {
+  const {setUser} = useUserAccount()
+  const navigate = useNavigate();
+
   const handleGoogleLogin = () => {
     login().then()
   };
@@ -10,7 +15,11 @@ const LoginWithGoogle: React.FC = () => {
   const {user, login} = useGoogleAuth();
 
   useEffect(() => {
+    if (!user) return
     console.log("User Google Login", user)
+    localStorage.setItem('user', JSON.stringify(user))
+    setUser(user)
+    navigate('/home')
   }, [user]);
   return (
     <div className="flex items-center justify-center">

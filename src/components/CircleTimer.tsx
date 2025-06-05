@@ -87,7 +87,7 @@ export const CircleTimer = (props: CircleTimerProps) => {
           r={radius}
           strokeWidth={strokeWidth}
           strokeDasharray={circumference}
-          strokeDashoffset={strokeDashOffset}
+          strokeDashoffset={`${strokeDashOffset}`}
           strokeLinecap="round"
           style={{
             transition: 'stroke-dashoffset 1s linear',
