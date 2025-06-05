@@ -1,8 +1,13 @@
 import './App.css'
-import { Layout } from './components/Layout';
+import {Layout} from './components/Layout';
 import {useEffect} from "react";
+import {HashRouter, Routes, Route, Navigate} from 'react-router-dom'
+import LoginPage from "./pages/auth/LoginPage.tsx";
+
 
 function App() {
+  const isAuthenticated = false
+
   const handleNotify = () => {
     if (Notification.permission === 'granted') {
     } else if (Notification.permission !== 'denied') {
@@ -21,8 +26,39 @@ function App() {
   }, [])
 
   return (
-    <Layout>
-    </Layout>
+    <HashRouter>
+      <Routes>
+        {/* Redirect root path based on auth */}
+        <Route
+          path="/"
+          element={
+            isAuthenticated ? (
+              <Navigate to="/home" replace/>
+            ) : (
+              <Navigate to="/login" replace/>
+            )
+          }
+        />
+
+        {/* Public routes */}
+        <Route path="/login" element={<LoginPage/>}/>
+
+        {/* Protected routes (only if authenticated) */}
+        {isAuthenticated && (
+          <>
+            <Route
+              path="/home"
+              element={
+                <Layout>
+                </Layout>
+              }
+            />
+          </>
+        )}
+      </Routes>
+    </HashRouter>
+    // <Layout>
+    // </Layout>
   )
 }
 
