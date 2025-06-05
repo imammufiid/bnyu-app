@@ -27,9 +27,8 @@ export const CircleTimer = (props: CircleTimerProps) => {
   }, []);
 
   useEffect(() => {
-    if (!isRepeat) return;
-    console.log("isRepeat", isRepeat)
     setTimeRemaining(duration);
+    if (!isRepeat || !isRunning) return;
     setIsRunning(true);
   }, [isRepeat, duration]);
 
