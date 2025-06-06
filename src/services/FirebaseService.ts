@@ -12,11 +12,11 @@ const firebaseConfig = {
   measurementId: "G-59KQVE8QGE"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-// Initialize Firestore
 export const db = getFirestore(app);
-
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
+
+export enum FirestoreCollection {
+  reminders = "reminders"
+}

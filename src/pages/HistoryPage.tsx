@@ -2,6 +2,7 @@ import {useFirestoreGetCollection} from "../hooks/firebase/useFirestoreGetCollec
 import {useEffect, useRef} from "react";
 import {DrinkReminder} from "../models/DrinkReminder.ts";
 import {Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend} from 'chart.js';
+import {FirestoreCollection} from "../services/FirebaseService.ts";
 
 // Register components
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
@@ -11,7 +12,7 @@ const ChartsCanvas = () => {
   const chartRef = useRef<HTMLCanvasElement | null>(null);
   const chartInstance = useRef<Chart | null>(null);
 
-  const {data, fetchData} = useFirestoreGetCollection<DrinkReminder>("reminders")
+  const {data, fetchData} = useFirestoreGetCollection<DrinkReminder>(FirestoreCollection.reminders)
 
   useEffect(() => {
     fetchData().then()

@@ -5,12 +5,15 @@ import {ReminderNotification} from "../components/ReminderNotification.tsx";
 import {DrinkReminder} from "../models/DrinkReminder.ts";
 import {useFirestoreSaveCollection} from "../hooks/firebase/useFirestoreSaveCollection.ts";
 import {Timestamp} from "firebase/firestore";
+import {useUserSession} from "../hooks/useUserSession.ts";
+import {FirestoreCollection} from "../services/FirebaseService.ts";
 
 export const TimerPage = () => {
 
   const [duration, setDuration] = useState(0)
   const [showReminder, setShowReminder] = useState(false)
-  const {save} = useFirestoreSaveCollection<DrinkReminder>("reminders")
+  const {save} = useFirestoreSaveCollection<DrinkReminder>(FirestoreCollection.reminders)
+  const {user} = useUserSession()
 
   useEffect(() => {
     const duration = localStorage.getItem(DURATION_KEY)
@@ -18,9 +21,11 @@ export const TimerPage = () => {
   }, []);
 
   const handleOnCompleteReminder = (isDrink: boolean) => {
+    if (!user) return
     const data: DrinkReminder = {
       isDrink: isDrink,
-      createdAt: Timestamp.now()
+      createdAt: Timestamp.now(),
+      userId: user.uid
     }
     save(data).then()
     setShowReminder(false)

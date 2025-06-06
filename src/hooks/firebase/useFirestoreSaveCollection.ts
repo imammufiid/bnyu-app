@@ -37,7 +37,6 @@ export function useFirestoreSaveCollection<T>(
         await setDoc(ref, docData);
       } else {
         await addDoc(collection(db, collectionName), docData);
-        console.log('asdfasdfasdfasdf', collectionName, docData)
       }
 
       setSuccess(true);
