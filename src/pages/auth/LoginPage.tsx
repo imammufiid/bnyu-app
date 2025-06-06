@@ -1,11 +1,10 @@
 import React, {useEffect} from 'react';
 import {CircleStackIcon} from '@heroicons/react/24/outline';
 import {useGoogleAuth} from "../../hooks/firebase/useGoogleAuth.ts";
-import {useUserAccount} from "../../hooks/useUserAccount.ts";
 import {useNavigate} from "react-router-dom";
+import {USER_KEY} from "../../services/StorageService.ts";
 
 const LoginWithGoogle: React.FC = () => {
-  const {setUser} = useUserAccount()
   const navigate = useNavigate();
 
   const handleGoogleLogin = () => {
@@ -16,9 +15,7 @@ const LoginWithGoogle: React.FC = () => {
 
   useEffect(() => {
     if (!user) return
-    console.log("User Google Login", user)
-    localStorage.setItem('user', JSON.stringify(user))
-    setUser(user)
+    localStorage.setItem(USER_KEY, JSON.stringify(user))
     navigate('/home')
   }, [user]);
   return (

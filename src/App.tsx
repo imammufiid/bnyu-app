@@ -1,15 +1,17 @@
 import './App.css'
 import {Layout} from './components/Layout';
 import {useEffect} from "react";
-import {HashRouter, Routes, Route, Navigate} from 'react-router-dom'
+import {HashRouter, Navigate, Route, Routes} from 'react-router-dom'
 import LoginPage from "./pages/auth/LoginPage.tsx";
+import {useUserSession} from "./hooks/useUserSession.ts";
 
 
 function App() {
-  const user = localStorage.getItem('user')
+  const {user} = useUserSession()
 
   const handleNotify = () => {
     if (Notification.permission === 'granted') {
+      console.log('Notification permission granted')
     } else if (Notification.permission !== 'denied') {
       Notification.requestPermission().then(permission => {
         if (permission === 'granted') {
@@ -28,7 +30,6 @@ function App() {
   return (
     <HashRouter>
       <Routes>
-        {/* Redirect root path based on auth */}
         <Route
           path="/"
           element={
@@ -39,8 +40,6 @@ function App() {
             )
           }
         />
-
-        {/* Public routes */}
         <Route path="/login" element={<LoginPage/>}/>
         <Route
           path="/home"
@@ -51,8 +50,6 @@ function App() {
         />
       </Routes>
     </HashRouter>
-    // <Layout>
-    // </Layout>
   )
 }
 

@@ -102,5 +102,6 @@ export class StorageService {
 
 
 export const DURATION_KEY = 'DURATION';
-export const REPEAT_KEY = 'REPEAT_KEY';
+export const REPEAT_KEY = 'REPEAT';
 export const ENABLE_NOTIFICATION_KEY = 'ENABLE_NOTIFICATION';
+export const USER_KEY = 'USER';

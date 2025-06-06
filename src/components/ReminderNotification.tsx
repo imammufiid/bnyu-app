@@ -1,7 +1,7 @@
 import {useCallback, useEffect, useRef, useState} from 'react';
 import {BellIcon} from '@heroicons/react/24/outline';
 import bellSound from './../assets/bell.wav'
-
+import {ENABLE_NOTIFICATION_KEY} from "../services/StorageService.ts";
 
 type ReminderNotificationProps = {
   onComplete: (isDrink: boolean) => void
@@ -12,9 +12,10 @@ export const ReminderNotification = (props: ReminderNotificationProps) => {
   const [isPlaying, setIsPlaying] = useState(true);
 
   useEffect(() => {
+    const isShowingNotification = localStorage.getItem(ENABLE_NOTIFICATION_KEY) === 'true'
+    if (!isShowingNotification) return
     const notification = new Notification('Lets Drink', { body: 'LET\'S MOTHER FUCKER' });
     notification.onclick = () => {
-      // Send an IPC message to main process to focus the window
       window.electronAPI?.focusAppWindow?.();
     };
   }, []);
@@ -48,7 +49,6 @@ export const ReminderNotification = (props: ReminderNotificationProps) => {
       </div>
 
       <div className="space-y-4">
-
         <button
           onClick={() => stopSound(true)}
           className="flex items-center px-4 py-2 rounded-lg shadow hover:bg-red-200 transition"

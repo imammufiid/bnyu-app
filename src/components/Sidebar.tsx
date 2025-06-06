@@ -1,9 +1,10 @@
 import {MdTimer, MdSettings, MdHistory, MdPerson, MdEmojiEvents, MdLogout} from 'react-icons/md';
-import {useUserAccount} from "../hooks/useUserAccount.ts";
 import {useCallback, useRef, useState} from "react";
 import { signOut } from "firebase/auth";
 import {auth} from "../services/FirebaseService.ts";
 import {useNavigate} from "react-router-dom";
+import {USER_KEY} from "../services/StorageService.ts";
+import {useUserSession} from "../hooks/useUserSession.ts";
 
 type SidebarProps = {
   onSelect: (item: string) => void;
@@ -20,7 +21,7 @@ export const Sidebar = ({onSelect, selectedItem, isCollapsed, onToggle}: Sidebar
     {id: 'rank', label: 'Rank', icon: <MdEmojiEvents size={24}/>},
   ];
 
-  const {user} = useUserAccount()
+  const {user} = useUserSession()
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate()
 
@@ -34,7 +35,7 @@ export const Sidebar = ({onSelect, selectedItem, isCollapsed, onToggle}: Sidebar
   const handleLogout = useCallback(() => {
     signOut(auth)
       .then(() => {
-        localStorage.removeItem('user')
+        localStorage.removeItem(USER_KEY)
         navigate('/login')
       })
   }, [])

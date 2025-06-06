@@ -39,7 +39,8 @@ export const SettingsPage = () => {
   }, [repeatOptionSelected]);
 
   const handleOnEnableNotifications = (e: ChangeEvent<HTMLInputElement>) => {
-    localStorage.setItem(ENABLE_NOTIFICATION_KEY, e.target.checked.toString())
+    setEnableNotification(e.target.checked)
+    localStorage.setItem(ENABLE_NOTIFICATION_KEY, (!e.target.checked).toString())
   }
 
   return (
