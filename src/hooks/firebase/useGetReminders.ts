@@ -1,20 +1,20 @@
-import {collection, getDocs, DocumentData, query, orderBy} from "firebase/firestore";
-import {db} from "../../services/FirebaseService.ts";
+import {collection, getDocs, DocumentData, query, orderBy, where} from "firebase/firestore";
+import {db, FirestoreCollection} from "../../services/FirebaseService.ts";
 import {useState} from "react";
 
-type FirestoreDoc<T> = T & { id: string };
+export type FirestoreDoc<T> = T & { id: string };
 
-export function useFirestoreGetCollection<T = DocumentData>(collectionName: string) {
+export function useGetReminders<T = DocumentData>() {
   const [data, setData] = useState<FirestoreDoc<T>[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
 
-  const fetchData = async () => {
+  const fetchData = async (uid: string) => {
     try {
-      const collectionRef = collection(db, collectionName)
       const q = query(
-        collectionRef,
-        orderBy("createdAt", "desc") // ascending order
+        collection(db, FirestoreCollection.reminders),
+        where("userId", "==", uid),
+        orderBy("createdAt", "desc"), // ascending order
       );
       const snapshot = await getDocs(q);
       const items = snapshot.docs.map((doc) => ({
@@ -27,7 +27,7 @@ export function useFirestoreGetCollection<T = DocumentData>(collectionName: stri
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return {data, loading, error, fetchData};
 }

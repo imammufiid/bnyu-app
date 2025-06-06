@@ -15,11 +15,11 @@ function createWindow() {
     icon: path.join(process.env.VITE_PUBLIC, "electron-vite.svg"),
     width: 1e3,
     // Increased window width
-    height: 600,
+    height: 700,
     // Increased window height
     minWidth: 500,
     // Minimum window width
-    minHeight: 200,
+    minHeight: 350,
     // Minimum window height
     resizable: true,
     // Make window resizable

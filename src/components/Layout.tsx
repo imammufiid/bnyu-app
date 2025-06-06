@@ -3,6 +3,7 @@ import { Sidebar } from './Sidebar';
 import { TimerPage } from '../pages/TimerPage';
 import { SettingsPage } from '../pages/SettingsPage';
 import { HistoryPage } from '../pages/HistoryPage';
+import {RankPage} from "../pages/RankPage.tsx";
 
 type LayoutProps = {
   children?: React.ReactNode;
@@ -20,6 +21,8 @@ export const Layout = ({ children }: LayoutProps) => {
         return <SettingsPage />;
       case 'history':
         return <HistoryPage />;
+      case 'rank':
+        return <RankPage />;
       default:
         return children;
     }

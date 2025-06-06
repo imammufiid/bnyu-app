@@ -14,7 +14,7 @@ export const ReminderNotification = (props: ReminderNotificationProps) => {
   useEffect(() => {
     const isShowingNotification = localStorage.getItem(ENABLE_NOTIFICATION_KEY) === 'true'
     if (!isShowingNotification) return
-    const notification = new Notification('Lets Drink', { body: 'LET\'S MOTHER FUCKER' });
+    const notification = new Notification('Water Reminder', { body: 'LET\'S DRINK MOTHER FUCKER' });
     notification.onclick = () => {
       window.electronAPI?.focusAppWindow?.();
     };
