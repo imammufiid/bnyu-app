@@ -19,6 +19,7 @@ function getStartOfMonth(date = new Date()) {
 type RankingResult = {
   userId: string;
   count: number;
+  user?: any;
 };
 
 type Rankings = {
@@ -27,6 +28,24 @@ type Rankings = {
   monthly: RankingResult[];
   all: RankingResult[];
 };
+
+// Helper to fetch users by userIds (Firestore 'in' query limit is 10)
+async function fetchUsersByIds(userIds: string[], db: any) {
+  if (userIds.length === 0) return {};
+  const userChunks = [];
+  for (let i = 0; i < userIds.length; i += 10) {
+    userChunks.push(userIds.slice(i, i + 10));
+  }
+  const users: Record<string, any> = {};
+  for (const chunk of userChunks) {
+    const q = query(collection(db, "users"), where("uid", "in", chunk));
+    const snapshot = await getDocs(q);
+    snapshot.forEach(doc => {
+      users[doc.data().uid] = doc.data();
+    });
+  }
+  return users;
+}
 
 export function useDrinkRankings() {
   const [rankings, setRankings] = useState<Rankings>({
@@ -69,13 +88,23 @@ export function useDrinkRankings() {
             }
           });
 
+          // Fetch user info for all userIds in this range
+          const userIds = Object.keys(counts);
+          const users = await fetchUsersByIds(userIds, db);
+
           const sorted = Object.entries(counts)
             .sort((a, b) => b[1] - a[1])
-            .map(([userId, count]) => ({userId, count}));
+            .map(([userId, count]) => ({
+              userId,
+              count,
+              user: users[userId] || null
+            }));
 
+            
           tempResults[range as keyof Rankings] = sorted;
         }
 
+        console.log(tempResults);
         setRankings(tempResults as Rankings);
       } catch (err) {
         console.error("Error fetching drink rankings:", err);

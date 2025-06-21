@@ -45,7 +45,7 @@ export const RankPage = () => {
               key={value}
               value={value}
               onClick={() => setActiveTab(value)}
-              className={`px-4 py-2 rounded-md transition-colors ${activeTab === value ? "bg-[#1a1a1a] text-white" : ""}`}
+              className={`px-4 py-2 rounded-md transition-colors ${activeTab === value ? "bg-[#1a1a1a] text-[#1a1a1a] font-bold" : ""}`}
               placeholder={undefined} onResize={undefined} onResizeCapture={undefined}
               onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               {label}
@@ -60,14 +60,21 @@ export const RankPage = () => {
             {tabsData.map(({value, data}) => (
               <TabPanel key={value} value={value}>
                 {data.length == 0 && (
-                  <div>No Data...</div>
+                  <div className="text-white">No Data...</div>
                 )}
                 {data.length > 0 && data.map((u, index) => (
                   <div
                     className={`bg-[#1a1a1a] ${index == 0 && data.length == 1 ? 'rounded-lg' : index == 0 ? 'rounded-t-lg rounded-b-0' : (index == data.length - 1) ? 'rounded-b-lg rounded-t-0' : ''} p-4`}>
                     <div className={'flex gap-4 items-center'}>
                       <div className={'font-semibold'}>{index + 1}.</div>
-                      <div className={'font-semibold flex-1 text-start'}>{u.userId}</div>
+                      <div className={'font-semibold flex-1 text-start text-white flex items-center gap-4'}>
+                        <img
+                          src={u.user.photoURL}
+                          alt={u.user.displayName || 'User'}
+                          className="w-8 h-8 rounded-full"
+                        />
+                        {u.user?.displayName}
+                      </div>
                       <div
                         className="w-8 h-8 flex items-center justify-center font-bold bg-gray-800 text-white rounded-full">
                         {u.count}

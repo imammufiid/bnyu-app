@@ -41,6 +41,8 @@ export function useFirestoreSaveCollection<T>(
 
       setSuccess(true);
     } catch (err) {
+      console.log('asdfasdfasdf', err);
+      
       setError(err);
     } finally {
       setLoading(false);
