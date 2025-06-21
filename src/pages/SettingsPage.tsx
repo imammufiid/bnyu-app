@@ -1,6 +1,8 @@
 import {ChangeEvent, useEffect, useState} from "react";
 import {DropdownPicker, DropdownPickerOption} from "../components/DropdownPicker";
 import {ENABLE_NOTIFICATION_KEY, DURATION_KEY, REPEAT_KEY} from "../services/StorageService.ts";
+// @ts-ignore
+import packageJson from '../../package.json';
 
 export const SettingsPage = () => {
 
@@ -80,6 +82,9 @@ export const SettingsPage = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="text-xs text-gray-400 text-center mt-8 select-none">
+        Version: v{packageJson.version}
       </div>
     </div>
   );
