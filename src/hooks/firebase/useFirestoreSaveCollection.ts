@@ -43,7 +43,7 @@ export function useFirestoreSaveCollection<T>(
     } catch (err) {
       console.log('asdfasdfasdf', err);
       
-      setError(err);
+    setError(err);
     } finally {
       setLoading(false);
     }
