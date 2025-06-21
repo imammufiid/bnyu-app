@@ -1,5 +1,5 @@
 {
-  "name": "water-reminder",
+  "name": "BNYU",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -42,7 +42,8 @@
   },
   "main": "dist-electron/main.js",
   "build": {
-    "appId": "com.mufiid.bnyu",
+    "productName": "BNYU", 
+    "appId": "com.bnyu.reminder",
     "mac": {
       "target": "dmg",
       "icon": "assets/icons/mac/icon.icns",
