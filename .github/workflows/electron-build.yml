@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Build app for macOS (dmg)
-        run: npx electron-builder --mac --publish never
+        run: npx electron-builder --mac --universal --publish never
 
       - name: Upload macOS artifact
         uses: actions/upload-artifact@v4
@@ -32,7 +32,7 @@ jobs:
 
       - name: Publish macOS release
         if: github.ref == 'refs/heads/main'
-        run: npx electron-builder --mac --publish always
+        run: npx electron-builder --mac --universal --publish always
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
