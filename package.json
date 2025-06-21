@@ -1,7 +1,7 @@
 {
   "name": "water-reminder",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -45,6 +45,7 @@
     "appId": "com.mufiid.bnyu",
     "mac": {
       "target": "dmg",
+      "icon": "assets/icons/mac/icon.icns",
       "category": "public.app-category.utilities"
     },
     "files": [
