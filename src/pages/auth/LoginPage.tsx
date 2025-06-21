@@ -3,9 +3,7 @@ import {useGoogleAuth} from "../../hooks/firebase/useGoogleAuth.ts";
 import {useNavigate} from "react-router-dom";
 import appIcon from '../../assets/appicon.png'
 import {USER_KEY} from "../../services/StorageService.ts";
-// import { useFirestoreSaveCollection } from '../../hooks/firebase/useFirestoreSaveCollection.ts';
 import { db, FirestoreCollection } from '../../services/FirebaseService.ts';
-import { UserWater } from '../../models/UserWater.ts';
 import { doc, getDoc, setDoc, Timestamp } from 'firebase/firestore';
 
 const LoginWithGoogle: React.FC = () => {
@@ -15,19 +13,10 @@ const LoginWithGoogle: React.FC = () => {
     login().then()
   };
 
-  // const {save} = useFirestoreSaveCollection<UserWater>(FirestoreCollection.users)
   const {user, login} = useGoogleAuth();
 
   useEffect(() => {
     if (!user) return
-
-    const data: UserWater = {
-      uid: user.uid,
-      email: user.email ?? '',
-      displayName: user.displayName ?? '',
-      photoURL: user.photoURL ?? '',
-      createdAt: Timestamp.now()
-    }
 
     const userRef = doc(db, FirestoreCollection.users, user.uid);
     getDoc(userRef).then((docSnap) => {
