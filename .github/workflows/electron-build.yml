@@ -22,13 +22,19 @@ jobs:
         run: npm install
 
       - name: Build app for macOS (dmg)
-        run: npm run dist
+        run: npx electron-builder --mac --publish never
 
       - name: Upload macOS artifact
         uses: actions/upload-artifact@v4
         with:
           name: mac-app
-          path: dist-electron/mac/*.dmg
+          path: dist/*.dmg
+
+      - name: Publish macOS release
+        if: github.ref == 'refs/heads/main'
+        run: npx electron-builder --mac --publish always
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
   build-win:
     runs-on: windows-latest
@@ -45,10 +51,16 @@ jobs:
         run: npm install
 
       - name: Build app for Windows (exe)
-        run: npm run dist
+        run: npx electron-builder --win --publish never
 
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
         with:
           name: windows-app
-          path: dist-electron/win-unpacked/*.exe 
+          path: dist/*.exe
+
+      - name: Publish Windows release
+        if: github.ref == 'refs/heads/main'
+        run: npx electron-builder --win --publish always
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
