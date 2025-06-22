@@ -45,13 +45,14 @@
   "build": {
     "productName": "BNYU", 
     "appId": "com.bnyu.reminder",
+    "afterPack": "./scripts/copy-license.js",
     "mac": {
       "target": "dmg",
       "icon": "assets/icons/mac/icon.icns",
       "category": "public.app-category.utilities"
     },
     "files": [
-      "!LICENSE",    
+      "LICENSE",    
       "dist/",
       "dist-electron/",
       "node_modules/",
