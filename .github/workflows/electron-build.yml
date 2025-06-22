@@ -18,11 +18,21 @@ jobs:
         with:
           node-version: 20
 
+      - name: Install dependencies
+        run: npm install
+
       - name: 🛠 Build for x64
         run: npx electron-builder --mac --x64 --publish never
   
       - name: 🛠 Build for arm64
         run: npx electron-builder --mac --arm64 --publish never
+  
+      - name: 📋 List generated files
+        run: |
+          echo "Contents of dist directory:"
+          ls -la dist/
+          echo "Contents of dist-electron directory:"
+          ls -la dist-electron/
   
       - name: 🧾 Copy LICENSE into both builds
         run: |
@@ -35,13 +45,25 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: mac-x64-app
-          path: dist/*x64*.dmg
+          path: dist/*.dmg
 
       - name: 📤 Upload macOS arm64 DMG
         uses: actions/upload-artifact@v4
         with:
           name: mac-arm64-app
-          path: dist/*arm64*.dmg
+          path: dist/*.dmg
+
+      # - name: Publish macOS x64 release
+      #   if: github.ref == 'refs/heads/main'
+      #   run: npx electron-builder --mac --x64 --publish always
+      #   env:
+      #     GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      # - name: Publish macOS arm64 release
+      #   if: github.ref == 'refs/heads/main'
+      #   run: npx electron-builder --mac --arm64 --publish always
+      #   env:
+      #     GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
   build-win:
     runs-on: windows-latest
