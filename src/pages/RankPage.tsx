@@ -69,8 +69,8 @@ export const RankPage = () => {
                       <div className={'font-semibold'}>{index + 1}.</div>
                       <div className={'font-semibold flex-1 text-start text-white flex items-center gap-4'}>
                         <img
-                          src={u.user.photoURL}
-                          alt={u.user.displayName || 'User'}
+                          src={u.user?.photoURL ?? ''}
+                          alt={u.user?.displayName || 'User'}
                           className="w-8 h-8 rounded-full"
                         />
                         {u.user?.displayName}
