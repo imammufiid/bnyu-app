@@ -24,10 +24,10 @@ jobs:
         run: npm install
 
       - name: 🛠 Build for x64
-        run: npm run build && electron-builder --mac --x64 --publish never
+        run: tsc && vite build && electron-builder --mac --x64 --publish never
   
       - name: 🛠 Build for arm64
-        run: npm run build && electron-builder --mac --arm64 --publish never
+        run: tsc && vite build && electron-builder --mac --arm64 --publish never
   
       - name: 📋 List generated files
         run: |
@@ -50,11 +50,11 @@ jobs:
 
       - name: Publish macOS x64 release
         if: github.ref == 'refs/heads/main'
-        run: npm run build && electron-builder --mac --x64 --publish always
+        run: tsc && vite build && electron-builder --mac --x64 --publish always
 
       - name: Publish macOS arm64 release
         if: github.ref == 'refs/heads/main'
-        run: npm run build && electron-builder --mac --arm64 --publish always
+        run: tsc && vite build && electron-builder --mac --arm64 --publish always
 
   build-win:
     runs-on: windows-latest
@@ -83,4 +83,4 @@ jobs:
 
       - name: Publish Windows release
         if: github.ref == 'refs/heads/main'
-        run: npm run build && electron-builder --win --publish always
+        run: tsc && vite build && electron-builder --win --publish always
