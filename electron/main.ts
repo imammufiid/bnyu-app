@@ -32,7 +32,7 @@ function createWindow() {
     height: 700, // Increased window height
     minWidth: 500, // Minimum window width
     minHeight: 350, // Minimum window height
-    resizable: true, // Make window resizable
+    resizable: false, // Make window resizable
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
     },
