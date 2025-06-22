@@ -31,18 +31,27 @@ jobs:
           cp LICENSE dist/mac-x64/LICENSE || echo "Skipping LICENSE copy for mac-x64"
           cp LICENSE dist/mac-arm64/LICENSE || echo "Skipping LICENSE copy for mac-arm64"
   
-      - name: 🔀 Merge to Universal binary
-        run: npx electron-builder --mac --universal
-  
-      - name: 📤 Upload macOS universal DMG
+      - name: 📤 Upload macOS x64 DMG
         uses: actions/upload-artifact@v4
         with:
-          name: mac-universal-app
-          path: dist/*.dmg
+          name: mac-x64-app
+          path: dist/*x64*.dmg
 
-      - name: Publish macOS release
+      - name: 📤 Upload macOS arm64 DMG
+        uses: actions/upload-artifact@v4
+        with:
+          name: mac-arm64-app
+          path: dist/*arm64*.dmg
+
+      - name: Publish macOS x64 release
         if: github.ref == 'refs/heads/main'
-        run: npx electron-builder --mac --universal --publish always
+        run: npx electron-builder --mac --x64 --publish always
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Publish macOS arm64 release
+        if: github.ref == 'refs/heads/main'
+        run: npx electron-builder --mac --arm64 --publish always
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
