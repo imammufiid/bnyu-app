@@ -43,18 +43,6 @@ jobs:
           name: mac-arm64-app
           path: dist/*arm64*.dmg
 
-      - name: Publish macOS x64 release
-        if: github.ref == 'refs/heads/main'
-        run: npx electron-builder --mac --x64 --publish always
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-
-      - name: Publish macOS arm64 release
-        if: github.ref == 'refs/heads/main'
-        run: npx electron-builder --mac --arm64 --publish always
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-
   build-win:
     runs-on: windows-latest
     steps:
