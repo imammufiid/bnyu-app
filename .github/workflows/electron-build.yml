@@ -26,8 +26,10 @@ jobs:
   
       - name: 🧾 Copy LICENSE into both builds
         run: |
-          cp LICENSE dist/mac-x64/LICENSE
-          cp LICENSE dist/mac-arm64/LICENSE
+          mkdir -p dist/mac-x64
+          mkdir -p dist/mac-arm64
+          cp LICENSE dist/mac-x64/LICENSE || echo "Skipping LICENSE copy for mac-x64"
+          cp LICENSE dist/mac-arm64/LICENSE || echo "Skipping LICENSE copy for mac-arm64"
   
       - name: 🔀 Merge to Universal binary
         run: npx electron-builder --mac --universal
