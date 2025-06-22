@@ -20,6 +20,11 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+      
+      - name: Copy LICENSE into both builds
+        run: |
+          cp LICENSE dist/mac-x64/LICENSE
+          cp LICENSE dist/mac-arm64/LICENSE
 
       - name: Build app for macOS (dmg)
         run: npx electron-builder --mac --universal --publish never
