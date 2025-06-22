@@ -33,6 +33,8 @@ function createWindow() {
     minWidth: 500, // Minimum window width
     minHeight: 350, // Minimum window height
     resizable: false, // Make window resizable
+    fullscreen: false, // Disable full screen
+    fullscreenable: false, // Prevent full screen toggle
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
     },
