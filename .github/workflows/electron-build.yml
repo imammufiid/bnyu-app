@@ -18,21 +18,24 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install dependencies
-        run: npm install
-      
-      - name: Copy LICENSE into both builds
+      - name: 🛠 Build for x64
+        run: npx electron-builder --mac --x64
+  
+      - name: 🛠 Build for arm64
+        run: npx electron-builder --mac --arm64
+  
+      - name: 🧾 Copy LICENSE into both builds
         run: |
           cp LICENSE dist/mac-x64/LICENSE
           cp LICENSE dist/mac-arm64/LICENSE
-
-      - name: Build app for macOS (dmg)
-        run: npx electron-builder --mac --universal --publish never
-
-      - name: Upload macOS artifact
+  
+      - name: 🔀 Merge to Universal binary
+        run: npx electron-builder --mac --universal
+  
+      - name: 📤 Upload macOS universal DMG
         uses: actions/upload-artifact@v4
         with:
-          name: mac-app
+          name: mac-universal-app
           path: dist/*.dmg
 
       - name: Publish macOS release
