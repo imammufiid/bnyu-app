@@ -6,6 +6,7 @@ import { db, FirestoreCollection } from '../../services/FirebaseService.ts';
 import { doc, getDoc, setDoc, Timestamp } from 'firebase/firestore';
 import { useEmailPasswordAuth } from './useEmailPasswordAuth.ts';
 import { useRegisterUser } from './useRegisterUser.ts';
+import { MdPerson } from "react-icons/md";
 
 const LoginWithGoogle: React.FC = () => {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ const LoginWithGoogle: React.FC = () => {
   const [regPassword, setRegPassword] = useState('');
   const [regConfirmPassword, setRegConfirmPassword] = useState('');
   const [regError, setRegError] = useState<string | null>(null);
+  const [regAvatar, setRegAvatar] = useState<string | null>(null);
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,7 +48,7 @@ const LoginWithGoogle: React.FC = () => {
       setRegError("Passwords do not match.");
       return;
     }
-    const userData = await register(regEmail, regDisplayName, regPassword);
+    const userData = await register(regEmail, regDisplayName, regPassword, regAvatar);
     if (userData) {
       setShowRegistration(false);
       setEmail(regEmail);
@@ -99,7 +101,9 @@ const LoginWithGoogle: React.FC = () => {
   return (
     <div className="flex items-center justify-center min-h-screen ">
       <div className="flex flex-col items-center p-8 rounded-2xl w-md" style={{ boxShadow: '0 4px 24px 0 rgba(156, 163, 175, 0.15)' }}>
-        <img src={appIcon} className="w-32 h-32 mb-6" alt="logo"/>
+        {!showRegistration && (
+          <img src={appIcon} className="w-32 h-32 mb-6" alt="logo"/>
+        )}
         {!showRegistration ? (
           <form onSubmit={handleEmailLogin} className="w-full flex flex-col gap-3 mb-4">
             <input
@@ -138,6 +142,38 @@ const LoginWithGoogle: React.FC = () => {
           </form>
         ) : (
           <form onSubmit={handleRegistrationSubmit} className="w-full flex flex-col gap-3 mb-4">
+            <div className="flex flex-col items-center mb-2">
+              <label htmlFor="avatar-upload" className="cursor-pointer">
+                {regAvatar ? (
+                  <img
+                    src={regAvatar}
+                    alt="Avatar Preview"
+                    className="w-16 h-16 rounded-full object-cover border-2 border-gray-300"
+                  />
+                ) : (
+                  <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center border-2 border-gray-300">
+                    <MdPerson size={36} className="text-gray-400" />
+                  </div>
+                )}
+                <input
+                  id="avatar-upload"
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        setRegAvatar(reader.result as string);
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }}
+                />
+              </label>
+              <span className="text-xs text-gray-500 mt-1">Click avatar to upload</span>
+            </div>
             <input
               type="email"
               placeholder="Email"
@@ -154,22 +190,24 @@ const LoginWithGoogle: React.FC = () => {
               onChange={e => setRegDisplayName(e.target.value)}
               required
             />
-            <input
-              type="password"
-              placeholder="Password"
-              className="px-3 py-2 rounded border border-gray-300 focus:outline-none"
-              value={regPassword}
-              onChange={e => setRegPassword(e.target.value)}
-              required
-            />
-            <input
-              type="password"
-              placeholder="Confirm Password"
-              className="px-3 py-2 rounded border border-gray-300 focus:outline-none"
-              value={regConfirmPassword}
-              onChange={e => setRegConfirmPassword(e.target.value)}
-              required
-            />
+            <div className="flex gap-3 w-full">
+              <input
+                type="password"
+                placeholder="Password"
+                className="flex-1 min-w-0 px-3 py-2 rounded border border-gray-300 focus:outline-none"
+                value={regPassword}
+                onChange={e => setRegPassword(e.target.value)}
+                required
+              />
+              <input
+                type="password"
+                placeholder="Confirm Password"
+                className="flex-1 min-w-0 px-3 py-2 rounded border border-gray-300 focus:outline-none"
+                value={regConfirmPassword}
+                onChange={e => setRegConfirmPassword(e.target.value)}
+                required
+              />
+            </div>
             <button
               type="submit"
               className="flex items-center justify-center px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600 focus:outline-none"
