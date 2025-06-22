@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: 🛠 Build for macOS
-        run: npm run dist
+        run: npm run dist --publish never
   
       - name: 📋 List generated files
         run: |
