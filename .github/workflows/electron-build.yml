@@ -25,28 +25,29 @@ jobs:
 
       - name: 🛠 Build for x64
         run: npx tsc && npx vite build && npx electron-builder --mac --x64 --publish never
+      
+      - name: Rename x64 DMG
+        run: |
+          mv dist/*.dmg dist/BNYU-x64.dmg
   
       - name: 🛠 Build for arm64
         run: npx tsc && npx vite build && npx electron-builder --mac --arm64 --publish never
-  
-      - name: 📋 List generated files
+      
+      - name: Rename arm64 DMG
         run: |
-          echo "Contents of dist directory:"
-          ls -la dist/
-          echo "Contents of dist-electron directory:"
-          ls -la dist-electron/
+          mv dist/*.dmg dist/BNYU-arm64.dmg
   
       - name: 📤 Upload macOS x64 DMG
         uses: actions/upload-artifact@v4
         with:
           name: mac-x64-app
-          path: dist/*.dmg
+          path: dist/BNYU-x64.dmg
 
       - name: 📤 Upload macOS arm64 DMG
         uses: actions/upload-artifact@v4
         with:
           name: mac-arm64-app
-          path: dist/*.dmg
+          path: dist/BNYU-arm64.dmg
 
       - name: Publish macOS x64 release
         if: github.ref == 'refs/heads/main'
