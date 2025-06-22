@@ -3,6 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && electron-builder",
@@ -50,6 +51,7 @@
       "category": "public.app-category.utilities"
     },
     "files": [
+      "!LICENSE",    
       "dist/",
       "dist-electron/",
       "node_modules/",
