@@ -44,17 +44,12 @@
   "main": "dist-electron/main.js",
   "build": {
     "productName": "BNYU", 
-    "asar": true,
     "appId": "com.bnyu.reminder",
     "afterAllArtifactBuild": "./scripts/copy-license.cjs",
     "mac": {
       "target": "dmg",
       "icon": "assets/icons/mac/icon.icns",
-      "category": "public.app-category.utilities",
-      "hardenedRuntime": true,
-      "gatekeeperAssess": false,
-      "entitlements": "build/entitlements.mac.plist",
-      "entitlementsInherit": "build/entitlements.mac.plist"
+      "category": "public.app-category.utilities"
     },
     "files": [
       "LICENSE",    

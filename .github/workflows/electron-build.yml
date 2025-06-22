@@ -21,11 +21,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: 🛠 Build for x64
-        run: npx electron-builder --mac --x64 --publish never
-  
-      - name: 🛠 Build for arm64
-        run: npx electron-builder --mac --arm64 --publish never
+      - name: 🛠 Build for macOS
+        run: npm run dist
   
       - name: 📋 List generated files
         run: |
@@ -41,27 +38,15 @@ jobs:
           cp LICENSE dist/mac-x64/LICENSE || echo "Skipping LICENSE copy for mac-x64"
           cp LICENSE dist/mac-arm64/LICENSE || echo "Skipping LICENSE copy for mac-arm64"
   
-      - name: 📤 Upload macOS x64 DMG
+      - name: 📤 Upload macOS DMG
         uses: actions/upload-artifact@v4
         with:
-          name: mac-x64-app
+          name: mac-app
           path: dist/*.dmg
 
-      - name: 📤 Upload macOS arm64 DMG
-        uses: actions/upload-artifact@v4
-        with:
-          name: mac-arm64-app
-          path: dist/*.dmg
-
-      # - name: Publish macOS x64 release
+      # - name: Publish macOS release
       #   if: github.ref == 'refs/heads/main'
-      #   run: npx electron-builder --mac --x64 --publish always
-      #   env:
-      #     GH_TOKEN: ${{ secrets.GH_TOKEN }}
-
-      # - name: Publish macOS arm64 release
-      #   if: github.ref == 'refs/heads/main'
-      #   run: npx electron-builder --mac --arm64 --publish always
+      #   run: npm run dist
       #   env:
       #     GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
@@ -79,8 +64,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build app for Windows (exe)
-        run: npx electron-builder --win --publish never
+      - name: Build app for Windows
+        run: npm run dist
 
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
@@ -90,6 +75,6 @@ jobs:
 
       - name: Publish Windows release
         if: github.ref == 'refs/heads/main'
-        run: npx electron-builder --win --publish always
+        run: npm run dist
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
