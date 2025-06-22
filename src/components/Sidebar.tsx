@@ -47,7 +47,7 @@ export const Sidebar = ({onSelect, selectedItem, isCollapsed, onToggle}: Sidebar
       <div className="flex items-center justify-between mb-8">
         {!isCollapsed && (
           <div className="text-2xl font-bold text-center">
-            Water Reminder
+            BNYU
           </div>
         )}
         <button
