@@ -24,10 +24,10 @@ jobs:
         run: npm install
 
       - name: 🛠 Build for x64
-        run: tsc && vite build && electron-builder --mac --x64 --publish never
+        run: npx tsc && npx vite build && electron-builder --mac --x64 --publish never
   
       - name: 🛠 Build for arm64
-        run: tsc && vite build && electron-builder --mac --arm64 --publish never
+        run: npx tsc && npx vite build && electron-builder --mac --arm64 --publish never
   
       - name: 📋 List generated files
         run: |
@@ -50,11 +50,11 @@ jobs:
 
       - name: Publish macOS x64 release
         if: github.ref == 'refs/heads/main'
-        run: tsc && vite build && electron-builder --mac --x64 --publish always
+        run: npx tsc && npx vite build && electron-builder --mac --x64 --publish always
 
       - name: Publish macOS arm64 release
         if: github.ref == 'refs/heads/main'
-        run: tsc && vite build && electron-builder --mac --arm64 --publish always
+        run: npx tsc && npx vite build && electron-builder --mac --arm64 --publish always
 
   build-win:
     runs-on: windows-latest
@@ -73,7 +73,7 @@ jobs:
         run: npm install
 
       - name: Build app for Windows (exe)
-        run: npx electron-builder --win --publish never
+        run: npx tsc && npx vite build && electron-builder --win --publish never
 
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
@@ -83,4 +83,4 @@ jobs:
 
       - name: Publish Windows release
         if: github.ref == 'refs/heads/main'
-        run: tsc && vite build && electron-builder --win --publish always
+        run: npx tsc && npx vite build && electron-builder --win --publish always
