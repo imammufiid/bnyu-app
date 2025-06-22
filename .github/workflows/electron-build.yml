@@ -19,10 +19,10 @@ jobs:
           node-version: 20
 
       - name: 🛠 Build for x64
-        run: npx electron-builder --mac --x64
+        run: npx electron-builder --mac --x64 --publish never
   
       - name: 🛠 Build for arm64
-        run: npx electron-builder --mac --arm64
+        run: npx electron-builder --mac --arm64 --publish never
   
       - name: 🧾 Copy LICENSE into both builds
         run: |
