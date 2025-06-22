@@ -9,6 +9,8 @@ on:
 jobs:
   build-mac:
     runs-on: macos-latest
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -21,8 +23,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: 🛠 Build for macOS
-        run: npm run dist
+      - name: 🛠 Build for x64
+        run: npm run build && electron-builder --mac --x64 --publish never
+  
+      - name: 🛠 Build for arm64
+        run: npm run build && electron-builder --mac --arm64 --publish never
   
       - name: 📋 List generated files
         run: |
@@ -31,27 +36,30 @@ jobs:
           echo "Contents of dist-electron directory:"
           ls -la dist-electron/
   
-      - name: 🧾 Copy LICENSE into both builds
-        run: |
-          mkdir -p dist/mac-x64
-          mkdir -p dist/mac-arm64
-          cp LICENSE dist/mac-x64/LICENSE || echo "Skipping LICENSE copy for mac-x64"
-          cp LICENSE dist/mac-arm64/LICENSE || echo "Skipping LICENSE copy for mac-arm64"
-  
-      - name: 📤 Upload macOS DMG
+      - name: 📤 Upload macOS x64 DMG
         uses: actions/upload-artifact@v4
         with:
-          name: mac-app
+          name: mac-x64-app
           path: dist/*.dmg
 
-      # - name: Publish macOS release
-      #   if: github.ref == 'refs/heads/main'
-      #   run: npm run dist
-      #   env:
-      #     GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      - name: 📤 Upload macOS arm64 DMG
+        uses: actions/upload-artifact@v4
+        with:
+          name: mac-arm64-app
+          path: dist/*.dmg
+
+      - name: Publish macOS x64 release
+        if: github.ref == 'refs/heads/main'
+        run: npm run build && electron-builder --mac --x64 --publish always
+
+      - name: Publish macOS arm64 release
+        if: github.ref == 'refs/heads/main'
+        run: npm run build && electron-builder --mac --arm64 --publish always
 
   build-win:
     runs-on: windows-latest
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -64,8 +72,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build app for Windows
-        run: npm run dist
+      - name: Build app for Windows (exe)
+        run: npx electron-builder --win --publish never
 
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
@@ -75,6 +83,4 @@ jobs:
 
       - name: Publish Windows release
         if: github.ref == 'refs/heads/main'
-        run: npm run dist
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: npm run build && electron-builder --win --publish always
