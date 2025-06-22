@@ -73,7 +73,10 @@ export const RankPage = () => {
                           alt={u.user?.displayName || 'User'}
                           className="w-8 h-8 rounded-full"
                         />
-                        {u.user?.displayName}
+                        <div>
+                          {u.user?.displayName}
+                          <div className="text-xs font-normal text-gray-400">{u.points} Pts</div>
+                        </div>
                       </div>
                       <div
                         className="w-8 h-8 flex items-center justify-center font-bold bg-gray-800 text-white rounded-full">

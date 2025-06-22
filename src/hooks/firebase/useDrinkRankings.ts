@@ -20,6 +20,7 @@ type RankingResult = {
   userId: string;
   count: number;
   user?: any;
+  points?: number;
 };
 
 type Rankings = {
@@ -45,6 +46,25 @@ async function fetchUsersByIds(userIds: string[], db: any) {
     });
   }
   return users;
+}
+
+// Helper to fetch points by userIds (Firestore 'in' query limit is 10)
+async function fetchPointsByUserIds(userIds: string[], db: any) {
+  if (userIds.length === 0) return {};
+  const userChunks = [];
+  for (let i = 0; i < userIds.length; i += 10) {
+    userChunks.push(userIds.slice(i, i + 10));
+  }
+  const points: Record<string, number> = {};
+  for (const chunk of userChunks) {
+    const q = query(collection(db, "points"), where("userId", "in", chunk));
+    const snapshot = await getDocs(q);
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      points[data.userId] = data.points ?? 0;
+    });
+  }
+  return points;
 }
 
 export function useDrinkRankings() {
@@ -88,23 +108,25 @@ export function useDrinkRankings() {
             }
           });
 
-          // Fetch user info for all userIds in this range
+          // Fetch user info and points for all userIds in this range
           const userIds = Object.keys(counts);
-          const users = await fetchUsersByIds(userIds, db);
+          const [users, points] = await Promise.all([
+            fetchUsersByIds(userIds, db),
+            fetchPointsByUserIds(userIds, db)
+          ]);
 
           const sorted = Object.entries(counts)
             .sort((a, b) => b[1] - a[1])
             .map(([userId, count]) => ({
               userId,
               count,
-              user: users[userId] || null
+              user: users[userId] || null,
+              points: points[userId] ?? 0
             }));
 
-            
           tempResults[range as keyof Rankings] = sorted;
         }
 
-        console.log(tempResults);
         setRankings(tempResults as Rankings);
       } catch (err) {
         console.error("Error fetching drink rankings:", err);

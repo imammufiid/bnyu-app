@@ -1,10 +1,11 @@
 import {MdTimer, MdSettings, MdHistory, MdPerson, MdEmojiEvents, MdLogout} from 'react-icons/md';
-import {useCallback, useRef, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import { signOut } from "firebase/auth";
 import {auth} from "../services/FirebaseService.ts";
 import {useNavigate} from "react-router-dom";
 import {USER_KEY} from "../services/StorageService.ts";
 import {useUserSession} from "../hooks/useUserSession.ts";
+import { useUserPoints } from '../pages/useUserPoints.ts';
 
 type SidebarProps = {
   onSelect: (item: string) => void;
@@ -24,6 +25,12 @@ export const Sidebar = ({onSelect, selectedItem, isCollapsed, onToggle}: Sidebar
   const {user} = useUserSession()
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate()
+  const { points, fetchPoints } = useUserPoints();
+
+  // When you want to fetch points for a user:
+  useEffect(() => {
+    fetchPoints(user?.uid ?? null);
+  }, [user?.uid]);
 
   const buttonRef = useRef<HTMLDivElement>(null);
 
@@ -95,7 +102,12 @@ export const Sidebar = ({onSelect, selectedItem, isCollapsed, onToggle}: Sidebar
           {user && user.photoURL && <img src={user.photoURL} alt="avatar" className="rounded-full "/>}
           {!user && <MdPerson size={24}/>}
         </div>
-        {!isCollapsed && (<div>{user?.displayName}</div>)}
+        {!isCollapsed && (
+          <div className='items-start'>
+            <div className={'font-semibold text-start '}>{user?.displayName}</div>
+            <div className={'text-start text-xs'}>{points ?? 0} Pts</div>
+          </div>
+        )}
         {showPopup &&
             <div
                 className="absolute bg-gray-600 border border-gray-800 rounded-xl shadow-xl p-2 z-[1000] bottom-18 left-4"

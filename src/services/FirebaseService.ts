@@ -19,5 +19,6 @@ export const googleProvider = new GoogleAuthProvider();
 
 export enum FirestoreCollection {
   reminders = "reminders",
-  users = "users"
+  users = "users",
+  points = "points",
 }

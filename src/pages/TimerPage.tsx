@@ -7,12 +7,14 @@ import {useFirestoreSaveCollection} from "../hooks/firebase/useFirestoreSaveColl
 import {Timestamp} from "firebase/firestore";
 import {useUserSession} from "../hooks/useUserSession.ts";
 import {FirestoreCollection} from "../services/FirebaseService.ts";
+import { useAddPoints } from './useAddPoints.ts';
 
 export const TimerPage = () => {
 
   const [duration, setDuration] = useState(0)
   const [showReminder, setShowReminder] = useState(false)
   const {save} = useFirestoreSaveCollection<DrinkReminder>(FirestoreCollection.reminders)
+  const { addPoints } = useAddPoints();
   const {user} = useUserSession()
 
   useEffect(() => {
@@ -28,6 +30,7 @@ export const TimerPage = () => {
       userId: user.uid
     }
     save(data).then()
+    addPoints(2, user.uid).then()
     setShowReminder(false)
   }
 
