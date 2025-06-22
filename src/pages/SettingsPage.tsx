@@ -7,6 +7,7 @@ import packageJson from '../../package.json';
 export const SettingsPage = () => {
 
   const intervalOptions: DropdownPickerOption<number>[] = [
+    {value: 1, label: '1 minute'},
     {value: 10, label: '10 minute'},
     {value: 20, label: '20 minutes'},
     {value: 30, label: '30 minutes'},
@@ -26,13 +27,17 @@ export const SettingsPage = () => {
     const repeat = localStorage.getItem(REPEAT_KEY)
     const enableNotification = localStorage.getItem(ENABLE_NOTIFICATION_KEY)
     setEnableNotification(enableNotification === 'true')
-    setIntervalOptionSelected(parseInt(intervalTime ?? '0'))
+    if (!intervalTime) {
+      const defaultDuration: number = intervalOptions[0].value
+      const newTime = parseInt(intervalTime ?? `${defaultDuration}`)      
+      setIntervalOptionSelected(newTime)
+    }
     setRepeatOptionSelected(repeat === 'true')
   }, []);
 
   useEffect(() => {
     if (!intervalOptionSelected) return
-    localStorage.setItem(DURATION_KEY, intervalOptionSelected.toString())
+    localStorage.setItem(DURATION_KEY, (intervalOptionSelected * 60).toString())
   }, [intervalOptionSelected]);
 
   useEffect(() => {
@@ -42,7 +47,7 @@ export const SettingsPage = () => {
 
   const handleOnEnableNotifications = (e: ChangeEvent<HTMLInputElement>) => {
     setEnableNotification(e.target.checked)
-    localStorage.setItem(ENABLE_NOTIFICATION_KEY, (!e.target.checked).toString())
+    localStorage.setItem(ENABLE_NOTIFICATION_KEY, (e.target.checked).toString())
   }
 
   return (
