@@ -45,7 +45,7 @@ const TodayReminderCharts = () => {
 
     if (chartInstance.current) {
       chartInstance.current.destroy();
-    }
+  }
 
     const isDark = theme === 'dark';
     const gridColor = isDark ? 'rgba(255,255,255,0.95)' : 'rgba(0,0,0,0.08)';

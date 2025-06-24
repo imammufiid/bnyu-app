@@ -45,7 +45,17 @@ const FeedbackPage: React.FC = () => {
         />
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-60"
+          className={`
+            w-full
+            font-semibold py-2 px-4 rounded-lg
+            transition-colors
+            bg-blue-600 hover:bg-blue-700 focus:bg-blue-700
+            dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:bg-blue-600
+            text-gray-700 dark:text-white
+            disabled:bg-gray-300 disabled:text-gray-300
+            dark:disabled:bg-gray-700 dark:disabled:text-gray-400
+            disabled:cursor-not-allowed
+          `}
           disabled={loading || !feedback.trim()}
         >
           {loading ? 'Submitting...' : 'Submit'}

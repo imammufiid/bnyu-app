@@ -4,7 +4,7 @@ import App from './App.tsx'
 import './index.css'
 import {TimerProvider} from "./states/providers/TimerProvider.tsx";
 import {TimerRunningProvider} from "./states/providers/TimerRunningProvider.tsx";
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext } from 'react';
 
 export const ThemeContext = createContext({
   theme: 'light',
