@@ -8,7 +8,7 @@ import { createContext } from 'react';
 
 export const ThemeContext = createContext({
   theme: 'light',
-  setTheme: (theme: 'light' | 'dark') => {},
+  setTheme: (_theme: 'light' | 'dark') => {},
 });
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
