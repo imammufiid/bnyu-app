@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState, useContext} from "react";
 import {DrinkReminder} from "../models/DrinkReminder.ts";
 import {
   Chart,
@@ -15,6 +15,7 @@ import {useUserSession} from "../hooks/useUserSession.ts";
 import {useTodayReminders} from "../hooks/firebase/useTodayReminder.ts";
 import {useWeekReminders} from "../hooks/firebase/useWeekReminder.ts";
 import {useMonthReminders} from "../hooks/firebase/useMonthReminder.ts";
+import {ThemeContext} from '../main';
 
 // Register components
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend, LineController,
@@ -30,6 +31,7 @@ const TodayReminderCharts = () => {
   const {user} = useUserSession()
   const {data, fetchData} = useTodayReminders<DrinkReminder>()
   const [isLoading, setIsLoading] = useState(true)
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     if (!user) return
@@ -45,6 +47,8 @@ const TodayReminderCharts = () => {
       chartInstance.current.destroy();
     }
 
+    const isDark = theme === 'dark';
+    const gridColor = isDark ? 'rgba(255,255,255,0.95)' : 'rgba(0,0,0,0.08)';
     chartInstance.current = new Chart(chartRef.current!, {
       type: 'bar',
       data: {
@@ -53,7 +57,10 @@ const TodayReminderCharts = () => {
           {
             label: 'Count',
             data: [drinkCount, noDrinkCount],
-            backgroundColor: ['rgb(54,162,235)', 'rgb(255,99,132)'],
+            backgroundColor: [
+              isDark ? 'rgb(54,162,235)' : 'rgb(37,99,235)',
+              isDark ? 'rgb(255,99,132)' : 'rgb(220,38,38)'
+            ],
           },
         ],
       },
@@ -61,26 +68,15 @@ const TodayReminderCharts = () => {
         responsive: true,
         scales: {
           x: {
-            ticks: {
-              color: 'white',      // X-axis label color
-            },
-            grid: {
-              color: 'rgba(255, 255, 255, 0.2)', // Optional: grid line color (faint white)
-            },
+            grid: {color: gridColor}
           },
           y: {
             beginAtZero: true,
-            ticks: {
-              color: 'white',      // Y-axis label color
-            },
-            grid: {
-              color: 'rgba(255, 255, 255, 0.2)',
-            },
           },
         },
       },
     });
-  }, [data]);
+  }, [data, theme]);
 
   const processChartData = (data: DrinkReminder[]) => {
     let drinkCount = 0;
@@ -109,6 +105,7 @@ const WeeklyReminderCharts = () => {
   const {user} = useUserSession();
   const {data, fetchData} = useWeekReminders<DrinkReminder>();
   const [isLoading, setIsLoading] = useState(true)
+  const { theme } = useContext(ThemeContext);
 
   const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
@@ -127,6 +124,9 @@ const WeeklyReminderCharts = () => {
       chartInstance.current.destroy();
     }
 
+    const isDark = theme === 'dark';
+    const textColor = isDark ? 'rgba(255,255,255,0.95)' : 'rgba(34,34,34,0.95)';
+    const gridColor = isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)';
     chartInstance.current = new Chart(chartRef.current!, {
       type: 'bar',
       data: {
@@ -135,12 +135,12 @@ const WeeklyReminderCharts = () => {
           {
             label: 'Drink',
             data: daysOfWeek.map(day => chartData[day]?.drink || 0),
-            backgroundColor: 'rgb(54, 162, 235)',
+            backgroundColor: isDark ? 'rgb(54, 162, 235)' : 'rgb(37,99,235)',
           },
           {
             label: 'No Drink',
             data: daysOfWeek.map(day => chartData[day]?.noDrink || 0),
-            backgroundColor: 'rgb(255, 99, 132)',
+            backgroundColor: isDark ? 'rgb(255, 99, 132)' : 'rgb(220,38,38)',
           },
         ],
       },
@@ -149,26 +149,26 @@ const WeeklyReminderCharts = () => {
         plugins: {
           legend: {
             labels: {
-              color: 'white',
+              color: textColor,
             },
           },
         },
         scales: {
           x: {
             stacked: false,
-            ticks: {color: 'white'},
-            grid: {color: 'rgba(255, 255, 255, 0.2)'},
+            // ticks: {color: textColor},
+            grid: {color: gridColor},
           },
           y: {
             beginAtZero: true,
             stacked: false,
-            ticks: {color: 'white'},
-            grid: {color: 'rgba(255, 255, 255, 0.2)'},
+            // ticks: {color: textColor},
+            grid: {color: gridColor},
           },
         },
       },
     });
-  }, [data]);
+  }, [data, theme]);
 
   const processChartData = (data: DrinkReminder[]) => {
     const result: Record<string, { drink: number; noDrink: number }> = {};
@@ -208,6 +208,7 @@ const MonthlyReminderCharts = () => {
   const {user} = useUserSession();
   const {data, fetchData} = useMonthReminders<DrinkReminder>();
   const [isLoading, setIsLoading] = useState(true)
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     if (!user) return;
@@ -224,6 +225,8 @@ const MonthlyReminderCharts = () => {
       chartInstance.current.destroy();
     }
 
+    const isDark = theme === 'dark';
+    const gridColor = isDark ? 'rgba(255,255,255,0.95)' : 'rgba(0,0,0,0.08)';
     chartInstance.current = new Chart(chartRef.current!, {
       type: 'line',
       data: {
@@ -232,15 +235,15 @@ const MonthlyReminderCharts = () => {
           {
             label: 'Drink',
             data: drinkCounts,
-            borderColor: 'rgb(54, 162, 235)',
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: isDark ? 'rgb(54, 162, 235)' : 'rgb(37,99,235)',
+            backgroundColor: isDark ? 'rgba(54, 162, 235, 0.2)' : 'rgba(37,99,235,0.08)',
             tension: 0.3,
           },
           {
             label: 'No Drink',
             data: noDrinkCounts,
-            borderColor: 'rgb(255, 99, 132)',
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: isDark ? 'rgb(255, 99, 132)' : 'rgb(220,38,38)',
+            backgroundColor: isDark ? 'rgba(255, 99, 132, 0.2)' : 'rgba(220,38,38,0.08)',
             tension: 0.3,
           },
         ],
@@ -250,32 +253,25 @@ const MonthlyReminderCharts = () => {
         plugins: {
           legend: {
             labels: {
-              color: 'white',
             },
           },
         },
         scales: {
           x: {
-            ticks: {
-              color: 'white',
-            },
             grid: {
-              color: 'rgba(255, 255, 255, 0.2)',
+              color: gridColor,
             },
           },
           y: {
             beginAtZero: true,
-            ticks: {
-              color: 'white',
-            },
             grid: {
-              color: 'rgba(255, 255, 255, 0.2)',
+              color: gridColor,
             },
           },
         },
       },
     });
-  }, [data]);
+  }, [data, theme]);
 
   const processChartData = (data: DrinkReminder[]) => {
     // Group counts by week number

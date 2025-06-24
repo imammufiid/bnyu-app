@@ -4,6 +4,12 @@ import App from './App.tsx'
 import './index.css'
 import {TimerProvider} from "./states/providers/TimerProvider.tsx";
 import {TimerRunningProvider} from "./states/providers/TimerRunningProvider.tsx";
+import { createContext, useContext, useEffect, useState } from 'react';
+
+export const ThemeContext = createContext({
+  theme: 'light',
+  setTheme: (theme: 'light' | 'dark') => {},
+});
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

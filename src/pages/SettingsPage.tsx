@@ -54,7 +54,7 @@ export const SettingsPage = () => {
     <div className="max-w-2xl mx-auto">
       <h1 className="text-3xl font-bold mb-8 text-start w-full">Settings</h1>
       <div className="space-y-6">
-        <div className="p-6 rounded-lg shadow">
+        <div className="p-6 rounded-lg shadow bg-white dark:bg-gray-800">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <span>Enable Notifications</span>

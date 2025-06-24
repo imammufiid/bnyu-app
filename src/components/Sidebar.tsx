@@ -49,7 +49,7 @@ export const Sidebar = ({onSelect, selectedItem, isCollapsed, onToggle}: Sidebar
   }, [])
 
   return (
-    <div className={`h-screen bg-gray-800 text-white p-4 transition-all duration-300 flex flex-col ${
+    <div className={`h-screen bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white p-4 transition-all duration-300 flex flex-col ${
       isCollapsed ? 'w-20' : 'w-64'
     }`}>
       <div className="flex items-center justify-between mb-8">
@@ -60,7 +60,7 @@ export const Sidebar = ({onSelect, selectedItem, isCollapsed, onToggle}: Sidebar
         )}
         <button
           onClick={onToggle}
-          className="p-2 rounded-lg hover:bg-gray-700 transition-colors"
+          className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
         >
           {isCollapsed ? '→' : '←'}
         </button>
@@ -76,8 +76,8 @@ export const Sidebar = ({onSelect, selectedItem, isCollapsed, onToggle}: Sidebar
                   isCollapsed ? 'justify-center' : 'space-x-3'
                 } px-4 py-3 rounded-lg transition-colors relative group ${
                   selectedItem === item.id
-                    ? 'bg-blue-600 text-white'
-                    : 'hover:bg-gray-700'
+                    ? 'bg-blue-600 text-gray-500'
+                    : 'hover:bg-gray-100 dark:hover:bg-gray-700'
                 }`}
               >
                 <span className="text-xl">{item.icon}</span>
@@ -86,7 +86,7 @@ export const Sidebar = ({onSelect, selectedItem, isCollapsed, onToggle}: Sidebar
                 {/* Tooltip */}
                 {isCollapsed && (
                   <div
-                    className="absolute left-full ml-2 px-2 py-1 bg-gray-900 text-white text-sm rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
+                    className="absolute left-full ml-2 px-2 py-1 bg-gray-200 dark:bg-gray-900 text-gray-900 dark:text-white text-sm rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap">
                     {item.label}
                   </div>
                 )}
@@ -99,7 +99,7 @@ export const Sidebar = ({onSelect, selectedItem, isCollapsed, onToggle}: Sidebar
       <div ref={buttonRef}
            onClick={handleClick}
            className={`relative flex items-center cursor-pointer gap-2 ${isCollapsed ? 'justify-center' : 'justify-start'}`}>
-        <div className="rounded-full bg-gray-900 w-12 h-12 p-1 flex justify-center items-center text-xl">
+        <div className="rounded-full bg-gray-300 dark:bg-gray-900 w-12 h-12 p-1 flex justify-center items-center text-xl">
           {user && user.photoURL && <img src={user.photoURL} alt="avatar" className="rounded-full "/>}
           {!user && <MdPerson size={24}/>}
         </div>
@@ -111,7 +111,7 @@ export const Sidebar = ({onSelect, selectedItem, isCollapsed, onToggle}: Sidebar
         )}
         {showPopup &&
             <div
-                className="absolute bg-gray-600 border border-gray-800 rounded-xl shadow-xl p-2 z-[1000] bottom-18 left-4"
+                className="absolute bg-gray-200 dark:bg-gray-600 border border-gray-300 dark:border-gray-800 rounded-xl shadow-xl p-2 z-[1000] bottom-18 left-4"
                 style={{
                   position: 'fixed',
                   minWidth: 200,
