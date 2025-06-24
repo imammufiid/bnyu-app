@@ -6,6 +6,7 @@ import {useNavigate} from "react-router-dom";
 import {USER_KEY} from "../services/StorageService.ts";
 import {useUserSession} from "../hooks/useUserSession.ts";
 import { useUserPoints } from '../pages/useUserPoints.ts';
+import { analytics, logEvent } from '../services/FirebaseService';
 
 type SidebarProps = {
   onSelect: (item: string) => void;
@@ -41,6 +42,9 @@ export const Sidebar = ({onSelect, selectedItem, isCollapsed, onToggle}: Sidebar
   };
 
   const handleLogout = useCallback(() => {
+    if (analytics) {
+      logEvent(analytics, 'logout');
+    }
     signOut(auth)
       .then(() => {
         localStorage.removeItem(USER_KEY)
@@ -71,7 +75,12 @@ export const Sidebar = ({onSelect, selectedItem, isCollapsed, onToggle}: Sidebar
           {menuItems.map((item) => (
             <li key={item.id}>
               <button
-                onClick={() => onSelect(item.id)}
+                onClick={() => {
+                  onSelect(item.id);
+                  if (analytics) {
+                    logEvent(analytics, 'menu_opened', { menu: item.label });
+                  }
+                }}
                 className={`w-full flex items-center ${
                   isCollapsed ? 'justify-center' : 'space-x-3'
                 } px-4 py-3 rounded-lg transition-colors relative group ${

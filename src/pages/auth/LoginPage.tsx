@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import appIcon from '../../assets/appicon.png'
 import {USER_KEY} from "../../services/StorageService.ts";
-import { db, FirestoreCollection } from '../../services/FirebaseService.ts';
+import { db, FirestoreCollection, analytics, logEvent } from '../../services/FirebaseService.ts';
 import { doc, getDoc, setDoc, Timestamp } from 'firebase/firestore';
 import { useEmailPasswordAuth } from './useEmailPasswordAuth.ts';
 import { useRegisterUser } from './useRegisterUser.ts';
@@ -30,6 +30,9 @@ const LoginWithGoogle: React.FC = () => {
     e.preventDefault();
     const userData = await emailLogin(email, password);
     if (userData) {
+      if (analytics) {
+        logEvent(analytics, 'login', { method: 'email' });
+      }
       localStorage.setItem(USER_KEY, JSON.stringify(userData));
       navigate('/home');
     }
@@ -50,6 +53,9 @@ const LoginWithGoogle: React.FC = () => {
     }
     const userData = await register(regEmail, regDisplayName, regPassword, regAvatar);
     if (userData) {
+      if (analytics) {
+        logEvent(analytics, 'register', { method: 'email' });
+      }
       setShowRegistration(false);
       setEmail(regEmail);
       setPassword("");

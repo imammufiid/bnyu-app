@@ -2,6 +2,7 @@ import {useCallback, useEffect, useRef, useState} from 'react';
 import {BellIcon} from '@heroicons/react/24/outline';
 import bellSound from './../assets/bell.wav'
 import {ENABLE_NOTIFICATION_KEY} from "../services/StorageService.ts";
+import { analytics, logEvent } from '../services/FirebaseService';
 
 type ReminderNotificationProps = {
   onComplete: (isDrink: boolean) => void
@@ -35,6 +36,9 @@ export const ReminderNotification = (props: ReminderNotificationProps) => {
       audio.pause();
       audio.currentTime = 0; // Reset to start
       setIsPlaying(false);
+      if (analytics) {
+        logEvent(analytics, 'reminder_tapped', { drank: isDrink });
+      }
       props.onComplete(isDrink)
     }
   }, [props.onComplete]);

@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {useTimer} from "../hooks/useTimer.ts";
 import {useTimerRunning} from "../hooks/useTimerRunning.ts";
 import {REPEAT_KEY} from "../services/StorageService.ts";
+import { analytics, logEvent } from '../services/FirebaseService';
 
 type CircleTimerProps = {
   duration: number
@@ -62,6 +63,9 @@ export const CircleTimer = (props: CircleTimerProps) => {
 
   const handleStart = () => {
     setIsRunning(true)
+    if (analytics) {
+      logEvent(analytics, 'timer_started');
+    }
   }
 
   const handleStop = () => {
