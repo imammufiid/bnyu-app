@@ -20,6 +20,7 @@ export const Sidebar = ({onSelect, selectedItem, isCollapsed, onToggle}: Sidebar
     {id: 'settings', label: 'Settings', icon: <MdSettings size={24}/>},
     {id: 'history', label: 'History', icon: <MdHistory size={24}/>},
     {id: 'rank', label: 'Rank', icon: <MdEmojiEvents size={24}/>},
+    {id: 'feedback', label: 'Feedback', icon: <MdPerson size={24}/>},
   ];
 
   const {user} = useUserSession()

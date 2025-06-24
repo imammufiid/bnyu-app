@@ -21,4 +21,5 @@ export enum FirestoreCollection {
   reminders = "reminders",
   users = "users",
   points = "points",
+  feedback = "feedback",
 }
