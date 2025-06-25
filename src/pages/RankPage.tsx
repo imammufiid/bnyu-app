@@ -45,7 +45,7 @@ export const RankPage = () => {
               key={value}
               value={value}
               onClick={() => setActiveTab(value)}
-              className={`px-4 py-2 ${(index == 0) ? 'rounded-l' : (index == tabsData.length-1) ? 'rounded-r' : ''} transition-colors ${activeTab === value ? "text-black font-bold" : "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-white"}`}
+              className={`px-4 py-2 ${(index == 0) ? 'rounded-l' : (index == tabsData.length-1) ? 'rounded-r' : ''} transition-colors ${activeTab === value ? "text-black font-bold" : "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-white"}`}
               placeholder={undefined} onResize={undefined} onResizeCapture={undefined}
               onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               {label}
