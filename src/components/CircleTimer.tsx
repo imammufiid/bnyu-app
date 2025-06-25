@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
 import {useTimer} from "../hooks/useTimer.ts";
-import {useTimerRunning} from "../hooks/useTimerRunning.ts";
 import {REPEAT_KEY} from "../services/StorageService.ts";
 import { analytics, logEvent } from '../services/FirebaseService';
 
@@ -13,46 +12,42 @@ export const CircleTimer = (props: CircleTimerProps) => {
   // Variables
   const size = 320
   const strokeWidth = 40
-  const {duration, onComplete} = props
+  const {duration: propDuration, onComplete} = props
   const radius = (size - strokeWidth) / 2
   const circumference = radius * 2 * Math.PI
 
   // Hooks
   const [isRepeat, setIsRepeat] = useState(false)
-  const {timeRemaining, setTimeRemaining} = useTimer();
-  const {isRunning, setIsRunning} = useTimerRunning()
+  const {
+    timeRemaining, setTimeRemaining,
+    isRunning, setIsRunning,
+    startTimestamp, setStartTimestamp,
+    duration, setDuration
+  } = useTimer();
 
   useEffect(() => {
     const repeat = localStorage.getItem(REPEAT_KEY)
     setIsRepeat(repeat === 'true')
   }, []);
 
+  // Sync prop duration to context duration
   useEffect(() => {
-    setTimeRemaining(duration);
-    if (!isRepeat || !isRunning) return;
-    setIsRunning(true);
-  }, [isRepeat, duration]);
+    setDuration(propDuration);
+    if (!isRunning) {
+      setTimeRemaining(propDuration);
+    }
+  }, [propDuration]);
 
-  // MARK: - Handle timer 
+  // Handle timer completion
   useEffect(() => {
-    if (!isRunning) return;
+    if (timeRemaining === 0 && isRunning) {
+      setIsRunning(false);
+      setStartTimestamp(null);
+      onComplete();
+    }
+  }, [timeRemaining, isRunning, onComplete, setIsRunning, setStartTimestamp]);
 
-    const timer = setTimeout(() => {
-      setTimeRemaining((prevState) => {
-        if (prevState <= 1) {
-          setIsRunning(false);
-          setTimeRemaining(duration)
-          onComplete();
-          return 0;
-        }
-        return prevState - 1;
-      });
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [timeRemaining, isRunning, isRepeat, duration, onComplete]);
-
-  const progress = timeRemaining / duration
+  const progress = duration > 0 ? timeRemaining / duration : 0
   const strokeDashOffset = circumference * (1 - progress)
 
   const formatTime = (second: number) => {
@@ -62,7 +57,9 @@ export const CircleTimer = (props: CircleTimerProps) => {
   }
 
   const handleStart = () => {
-    setIsRunning(true)
+    setIsRunning(true);
+    // If resuming from pause, adjust startTimestamp so timer resumes from where it left off
+    setStartTimestamp(Date.now() - (duration - timeRemaining) * 1000);
     if (analytics) {
       logEvent(analytics, 'timer_started');
     }
