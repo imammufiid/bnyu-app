@@ -21,7 +21,7 @@ export const DropdownPicker = <T,>(props: DropdownPickerProps<T>) => {
         onChange={(e) => {
           onChange(e.target.value as any)
         }}
-        className="block w-full rounded-md bg-gray-200 text-gray-900 dark:bg-gray-800 dark:text-white p-2"
+        className="block w-full rounded-md bg-gray-200 text-gray-900 dark:bg-gray-600 dark:text-white p-2"
       >
         {options.map((option) => (
           <option
