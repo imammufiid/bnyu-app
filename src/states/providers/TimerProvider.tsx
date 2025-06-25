@@ -15,7 +15,7 @@ export const TimerProvider = ({children}: { children: ReactNode }) => {
         const elapsed = Math.floor((Date.now() - startTimestamp) / 1000);
         const remaining = Math.max(duration - elapsed, 0);
         setTimeRemaining(remaining);
-        if (remaining <= 0) {
+        if (remaining < 0) {
           setIsRunning(false);
           setStartTimestamp(null);
           clearInterval(intervalRef.current!);

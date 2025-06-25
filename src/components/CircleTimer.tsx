@@ -40,7 +40,7 @@ export const CircleTimer = (props: CircleTimerProps) => {
 
   // Handle timer completion
   useEffect(() => {    
-    if (timeRemaining === 0 && !isRunning) {
+    if (timeRemaining === 0 && isRunning) {
       setIsRunning(false);
       setStartTimestamp(null);
       onComplete();
