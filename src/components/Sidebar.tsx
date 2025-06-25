@@ -85,11 +85,11 @@ export const Sidebar = ({onSelect, selectedItem, isCollapsed, onToggle}: Sidebar
                   isCollapsed ? 'justify-center' : 'space-x-3'
                 } px-4 py-3 rounded-lg transition-colors relative group ${
                   selectedItem === item.id
-                    ? 'bg-blue-600 text-gray-500'
-                    : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                    ? 'bg-gradient-to-r from-blue-600 to-blue-400 text-white font-bold shadow-lg'
+                    : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-white'
                 }`}
               >
-                <span className="text-xl">{item.icon}</span>
+                <span className={`text-xl ${selectedItem === item.id ? 'text-white' : ''}`}>{item.icon}</span>
                 {!isCollapsed && <span>{item.label}</span>}
 
                 {/* Tooltip */}

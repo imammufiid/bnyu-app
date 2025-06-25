@@ -17,11 +17,11 @@ export const CircleTimer = (props: CircleTimerProps) => {
   const circumference = radius * 2 * Math.PI
 
   // Hooks
-  const [isRepeat, setIsRepeat] = useState(false)
+  const [_isRepeat, setIsRepeat] = useState(false)
   const {
     timeRemaining, setTimeRemaining,
     isRunning, setIsRunning,
-    startTimestamp, setStartTimestamp,
+    setStartTimestamp,
     duration, setDuration
   } = useTimer();
 

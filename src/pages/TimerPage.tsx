@@ -8,7 +8,6 @@ import {Timestamp} from "firebase/firestore";
 import {useUserSession} from "../hooks/useUserSession.ts";
 import {FirestoreCollection} from "../services/FirebaseService.ts";
 import { useAddPoints } from './useAddPoints.ts';
-import { useTimerRunning } from '../hooks/useTimerRunning.ts';
 
 export const TimerPage = () => {
 
@@ -17,7 +16,6 @@ export const TimerPage = () => {
   const {save} = useFirestoreSaveCollection<DrinkReminder>(FirestoreCollection.reminders)
   const { addPoints } = useAddPoints();
   const {user} = useUserSession()
-  const {isRunning} = useTimerRunning()
 
   useEffect(() => {
     // if (isRunning) return

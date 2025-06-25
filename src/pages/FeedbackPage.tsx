@@ -32,7 +32,7 @@ const FeedbackPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-16 p-8 rounded-xl shadow-md">
+    <div className="max-w-xl mx-auto mt-16 p-8 rounded-xl shadow-md bg-white dark:bg-gray-800">
       <h1 className="text-2xl font-bold mb-4">Feedback</h1>
       <p className="mb-6">We value your feedback! Please let us know your thoughts, suggestions, or issues you encountered while using Water Reminder.</p>
       <form onSubmit={handleSubmit}>
